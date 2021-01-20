@@ -10,11 +10,11 @@ import org.springframework.data.repository.query.Param;
 import com.assignment.inventory.model.Employee;
 
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
-	
+
 	@Transactional
 	@Modifying
-	@Query(value="update employee set first_name = :firstName, last_name = :lastName, age = :age where id = :id", nativeQuery = true)
-	void updateEmployee(@Param("id") Long id, @Param("firstName") String firstName, @Param("lastName") String lastName, 
+	@Query(value = "update employee set first_name = :firstName, last_name = :lastName, age = :age where id = :id", nativeQuery = true)
+	void updateEmployee(@Param("id") Long id, @Param("firstName") String firstName, @Param("lastName") String lastName,
 			@Param("age") int age);
-		
+
 }
