@@ -22,23 +22,31 @@ Solution
 6. It can be tested via postman
 7. The endpoints available are:
   GET
+  
   http://localhost:8081/api/employee/{id}
+  
   http://localhost:8081/api/employee/all
+  
   http://localhost:8081/api/employee/uploadstatus/{taskid}
   
   POST
+  
   http://localhost:8081/api/employee
+  
   payload:
   {
     "firstName": "JACK",
     "lastName": "SMITH",
     "age": 45
   }
+  
   http://localhost:8081/api/employee?action=upload
   Other settings in postman: Body->form-data => key: file value: <upload file>, key: name value: filename
   
   PUT
+  
   http://localhost:8081/api/employee
+  
   payload:
   {
     "id": 1,
@@ -48,6 +56,7 @@ Solution
   }
   
   DELETE
+  
   http://localhost:8081/api/employee/{id}
   
   
