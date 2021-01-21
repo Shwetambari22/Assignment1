@@ -17,7 +17,7 @@ Solution
 1. Clone the inventory repo @ https://github.com/Shwetambari22/Assignment1.git
 2. Import maven project "inventory"
 3. MySQL DB is used. To set up the schema, run scripts in folder "db_scripts_inventory"
-4. In application.properties set root_path = <local directory path>
+4. In application.properties set root_path = local directory path
 5. Run the app
 6. It can be tested via postman
 7. The endpoints available are:
