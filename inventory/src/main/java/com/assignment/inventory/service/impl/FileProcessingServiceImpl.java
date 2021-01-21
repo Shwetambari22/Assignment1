@@ -18,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.assignment.inventory.dao.FileDetailsRepo;
+import com.assignment.inventory.exception.FileProcessingException;
 import com.assignment.inventory.model.Employee;
 import com.assignment.inventory.model.FileDetails;
 import com.assignment.inventory.service.EmployeeService;
@@ -59,8 +60,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
 			addNewTask(taskId, name);
 
 		} catch (Exception e) {
-			// handle exception
-			System.out.println("Failed to upload " + name + " => " + e.getMessage());
+			throw new FileProcessingException("Failed to upload file " + name + " => " + e.getMessage());
 		}
 		return taskId;
 	}
@@ -79,8 +79,9 @@ public class FileProcessingServiceImpl implements FileProcessingService {
 		Optional<String> statusOpt = fileDtlsRepo.getStatus(taskId);
 		if (statusOpt.isPresent()) {
 			return statusOpt.get();
+		} else {
+			throw new FileProcessingException("Invalid task id: " + taskId);
 		}
-		return "Invalid Task Id";
 	}
 
 	@Override
@@ -103,7 +104,6 @@ public class FileProcessingServiceImpl implements FileProcessingService {
 
 	@Override
 	public void readFile(FileDetails fileDetails) {
-		// File file = FileUtils.getFile("C:\\Shweta\\fileupload\\tmpFiles\\testfile");
 		File file = FileUtils
 				.getFile(rootPath + File.separator + DIRECTORY + File.separator + fileDetails.getFileName());
 		List<Employee> empList = new ArrayList<Employee>();
@@ -123,10 +123,8 @@ public class FileProcessingServiceImpl implements FileProcessingService {
 				}
 				count++;
 			}
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new FileProcessingException("Failed to read file" + fileDetails.getFileName());
 		}
 	}
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.assignment.inventory.dao.EmployeeRepo;
+import com.assignment.inventory.exception.EmployeeNotFoundException;
 import com.assignment.inventory.model.Employee;
 import com.assignment.inventory.service.EmployeeService;
 
@@ -22,9 +23,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<Employee> empList = employeeRepo.findAll();
 		if (!CollectionUtils.isEmpty(empList)) {
 			return empList;
+		} else {
+			throw new EmployeeNotFoundException("Employee list empty!");
 		}
-		// throw exception
-		return null;
 	}
 
 	@Override
@@ -32,28 +33,40 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<Employee> empDataOpt = employeeRepo.findById(id);
 		if (empDataOpt.isPresent()) {
 			return empDataOpt.get();
+		}else {
+			throw new EmployeeNotFoundException("Employee not found with id " + id);
 		}
-		// throw exception
-		return null;
 	}
 
 	@Override
 	public Long addEmployee(Employee emp) {
+		if(emp == null) {
+			throw new EmployeeNotFoundException("Invaid employee data!");
+		}
 		employeeRepo.save(emp);
-		System.out.println(emp.getId());
 		return emp.getId();
 	}
 
 	@Override
 	public void deleteEmployee(Long id) {
-		employeeRepo.deleteById(id);
-		// handle case if id not present
+		if(getEmployee(id) != null) {
+			employeeRepo.deleteById(id);
+		} else {
+			throw new EmployeeNotFoundException("Employee not found with id " + id);
+		}
 	}
 
 	@Override
 	public Employee updateEmployee(Employee emp) {
-		employeeRepo.updateEmployee(emp.getId(), emp.getFirstName(), emp.getLastName(), emp.getAge());
-		return getEmployee(emp.getId());
+		if(emp == null) {
+			throw new EmployeeNotFoundException("Invaid employee data!");
+		}
+		if(getEmployee(emp.getId()) != null) {
+			employeeRepo.updateEmployee(emp.getId(), emp.getFirstName(), emp.getLastName(), emp.getAge());
+			return getEmployee(emp.getId());
+		} else {
+			throw new EmployeeNotFoundException("Employee not found with id " + emp.getId());
+		}
 	}
 
 	@Override
